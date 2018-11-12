@@ -19,6 +19,7 @@ from kivy.uix.label import Label
 from kivy.uix.floatlayout import FloatLayout
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.camera import Camera
+from kivy.uix.image import Image
 from kivy.lang.builder import Builder
 
 Builder.load_string('''
@@ -44,7 +45,9 @@ Builder.load_string('''
         Rectangle:
             pos: self.pos
             size: self.size    
-    
+    Image:
+        id: img
+        size: 20,20
     Button:
         border: 0,0,0,0
         id: blink
@@ -68,7 +71,7 @@ class Layout(FloatLayout):
         #camera.play = True
         #camera.export_to_png("C:/Hari Docs/Kivy/pic.png")
         #print('Picure Taken')
-
+        image = self.ids['img']
         
         def eye_aspect_ratio(eye):
             A = dist.euclidean(eye[1], eye[5])
@@ -141,8 +144,9 @@ class Layout(FloatLayout):
                 break
         vs.stop()
         cv2.destroyAllWindows()        
-        label = self.ids['label']
-        label.text = 'Picture Taken'        
+        #label = self.ids['label']
+        #label.text = 'Picture Taken'        
+        image.source = img_name
 
 class myKivy(App):
     def build(self):
