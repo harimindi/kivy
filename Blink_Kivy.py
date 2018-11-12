@@ -24,41 +24,37 @@ from kivy.lang.builder import Builder
 Builder.load_string('''
 <Button>:
     background_normal: ''
-    background_color: 0,0,0,0
     canvas.before:
         Color:
-            rgba: (0.733, 0.145, 0.145,1) if self.state=='normal' else (0,.7,.7,1)
-        RoundedRectangle:
-            pos: self.pos
-            size: self.size
-            radius: [30,]
-    #background_color: 0.733, 0.145, 0.145,1.8
+            rgba: (1,1,1,1)
+        Line:
+            width: 2
+            rectangle: self.x, self.y, self.width, self.height
+    background_color: (0.05,0.5,0.8,1)
     font_size: 40
     color: 1,1,1,1
-    size_hint: 0.3, 0.1
+    size_hint: 0.2, 0.1
 <Layout>:
         
-    #canvas.before:
-     #   Color:
-      #      rgba:0.161, 0.561, 0.761,1
-       # Rectangle:
-        #    pos: self.pos
-         #   size: self.size
-    #Camera:
-        #id: camera
-        #resolution: (300, 300)
-        #play: False
-    
     orientation: 'vertical'
+
+    canvas.before:
+        Color:
+            rgba:0.05, 0.5, 0.8,1
+        Rectangle:
+            pos: self.pos
+            size: self.size    
+    
     Button:
+        border: 0,0,0,0
         id: blink
         text: "Blink"
-        pos_hint: {'x':.1, 'y':.8}
+        pos_hint: {'x':.1, 'y':.2}
         on_press: root.onCameraClick()
     Button:
         id: next
         text: "Exit"
-        pos_hint: {'x':.6, 'y':.8}
+        pos_hint: {'x':.7, 'y':.2}
     Label:
         id: label
         text: "Take a Blink Selfie..!"
