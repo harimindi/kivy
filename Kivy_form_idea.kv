@@ -1,0 +1,105 @@
+BoxLayout:
+    #Parent layout
+    id: mainBox
+    Popup:
+        id: popup
+        size_hint: (.7, .7)
+        title: "Add Phonebook Entry"
+        on_parent:
+            # Popup wont be visible when the program starts
+            if self.parent == mainBox: self.parent.remove_widget(self)
+        GridLayout:
+            # GUI of the popup
+            id: inputs
+            cols:2
+            rows:4
+            orientation: 'vertical'
+            Label:
+                text: 'Item name: '
+                size_hint_y: .25
+
+            TextInput:
+                id: newName
+                value: ''
+                size_hint_y: None
+                multiline: False #These lines will make the cursor enter the next textbox when tab is pressed
+                write_tab: False
+
+            Label:
+                text: 'Description: '
+                size_hint_y: .25
+
+            TextInput:
+                id: newDesc
+                value: ''
+                size_hint_y: None
+
+                multiline: False
+                write_tab: False
+
+            Label:
+                text: 'Cost per day: '
+                size_hint_y: .25
+
+            TextInput:
+                id: newCost
+                value: ''
+                size_hint_y: None
+                multiline: False
+                write_tab: False
+            Button:
+                text: 'Save Entry'
+                on_release: app.create_new_item(newName.text, newDesc.text, newCost.text)
+            Button:
+                text: 'Cancel'
+                on_release: app.cancel_new_item()
+            Label:
+                text: app.infoBar
+    BoxLayout:
+    #Main menu layout
+        orientation: 'vertical'
+        BoxLayout:
+            orientation: 'horizontal'
+            BoxLayout:
+                orientation: 'vertical'
+                size_hint_x: 0.3
+
+                Button:
+                    id: listMenu
+                    text: 'List item'
+                    on_release: app.click_menuList(self)
+
+                Button:
+                    id: hireMenu
+                    text: 'Hire item'
+                    on_release: app.click_menuHire(self)
+
+                Button:
+                    id: returnMenu
+                    text: 'Return item'
+                    on_release: app.click_menuReturn(self)
+
+                Button:
+                    id: confirmMenu
+                    text: 'Confirm'
+                    on_release: app.confirmItems()
+
+                Button:
+                    id: addItem
+                    text: 'Add item'
+                    on_release: app.add_new_item()
+
+                Button:
+                    id: quitMenu
+                    text: 'Quit'
+                    on_release: app.click_Quit()
+
+            GridLayout:
+                # this layout is where the item buttons are created
+                id: entriesBox
+                cols: 2
+                orientation: 'vertical'
+        Label:
+            id: infoBar #This is where item information and errors are displayed
+            size_hint_y: 0.1
+            text: app.infoBar
