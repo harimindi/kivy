@@ -1,29 +1,39 @@
+
+ScreenManagement:
+    MainScreen:
+    IDScreen:
+
 <Label>:
-    background_color:
+    #background_color:
     canvas.before:
         Color:
-            rgba: 0.5,0.5,0.5,1
-        Rectangle:
+            rgba: 1,1,1,1
+        #Line:
+            #width: 2
+            #color: 1,1,1,1
+            #rectangle: self.x, self.y, self.width, self.height
+        RoundedRectangle:
             pos: self.pos
             size: self.size
-    color: 1,1,1,1
+    color: 0,0,0,1
     font_size: 20
-    size_hint: (.3, .1)
+    size_hint: (.3, .05)
 <TextInput>:
     background: 1., 1., 1., 1.
     font_size: 14
     multiline: False
-    size_hint: (.4, .1)
+    size_hint: (.4, .05)
 
-<MyWidget>:
-    #canvas:
-        #Color: 
-            #rgba: (.5, 0.5, 0.5, 1)
-        #Rectangle:
-         #   pos: self.pos
-          #  size: self.size
+<MainScreen>:
+    name: "Main_Screen"
+    canvas:
+        Color: 
+            rgba: (0.48, .09, 0.32, 1)
+        Rectangle:
+            pos: self.pos
+            size: self.size
     
-    FloatLayout:
+    RelativeLayout:
         size: root.size
         Label:
             id: lbl_FirstName
@@ -31,41 +41,83 @@
             text: 'First Name'
         Label:
             id: lbl_LastName
-            pos_hint: {'x':.1, 'y':.7}
+            pos_hint: {'x':.1, 'y':.75}
             text: 'Last Name'
         Label:
             id: lbl_DOB
-            pos_hint: {'x':.1, 'y':.55}
+            pos_hint: {'x':.1, 'y':.65}
             text: 'Date of Birth'
         Label:
             id: lbl_Nationality
-            pos_hint: {'x':.1, 'y':.40}
+            pos_hint: {'x':.1, 'y':.55}
             text: 'Nationality'
         Label:
             id: lbl_ID1
-            pos_hint: {'x':.1, 'y':.25}
+            pos_hint: {'x':.1, 'y':.45}
             text: 'Identity Document - 1'
         Label:
             id: lbl_ID2
-            pos_hint: {'x':.1, 'y':.1}
+            pos_hint: {'x':.1, 'y':.35}
             text: 'Identity Document - 2'                    
         TextInput:
             id: txt_FirstName
-            pos_hint: {'x':.5, 'y':.85}
+            pos_hint: {'x':.45, 'y':.85}
         TextInput:
             id: txt_LastName
-            pos_hint: {'x':.5, 'y':.7}
+            pos_hint: {'x':.45, 'y':.75}
         TextInput:
             id: txt_DOB
-            pos_hint: {'x':.5, 'y':.55}
+            pos_hint: {'x':.45, 'y':.65}
+            on_focus: root.show_calendar()
         TextInput:
             id: txt_Nationality
-            pos_hint: {'x':.5, 'y':.4}
+            pos_hint: {'x':.45, 'y':.55}
         TextInput:
             id: txt_ID1
-            pos_hint: {'x':.5, 'y':.25}
+            pos_hint: {'x':.45, 'y':.45}
         TextInput:
             id: txt_ID2
-            pos_hint: {'x':.5, 'y':.1}
+            pos_hint: {'x':.45, 'y':.35}
+        Button:
+            id: btn_submit
+            background_color: ""
+            canvas.before:
+                Color:
+                    rgba: 1,1,1,1
+                RoundedRectangle:
+                    pos: self.pos
+                    size: self.size
+            color: 0,0,0,1   
+            text: "SUBMIT"
+            size_hint: (.25, .1)
+            pos_hint: {'x':.30, 'y':.15}
+            on_release: app.root.current = "ID_Screen"
+
 <DatePicker>:
     pHint: .5, .5
+<IDScreen>:
+    name: "ID_Screen"
+    canvas.before:
+        Color:
+            rgba:0.05, 0.5, 0.8,1
+        Rectangle:
+            pos: self.pos
+            size: self.size    
+    Image:
+        id: img
+        size: 20,30
+    Button:
+        border: 0,0,0,0
+        id: blink
+        text: "Blink"
+        pos_hint: {'x':.1, 'y':.2}
+        on_press: root.onCameraClick()
+    Button:
+        id: next
+        text: "MAIN"
+        pos_hint: {'x':.7, 'y':.2}
+        on_release: app.root.current = "Main_Screen"
+    #Label:
+        #id: label
+        #text: "Take a Blink Selfie..!"
+        #pos_hint: {'x':.8, 'y':.3}
