@@ -23,7 +23,16 @@ ScreenManagement:
     font_size: 14
     multiline: False
     size_hint: (.4, .05)
-
+<Button>:
+    background_color: ""
+    canvas.before:
+        Color:
+            rgba: 1,1,1,1
+        RoundedRectangle:
+            pos: self.pos
+            size: self.size
+    color: 0,0,0,1
+    font_size: 20
 <MainScreen>:
     name: "Main_Screen"
     canvas:
@@ -80,14 +89,6 @@ ScreenManagement:
             pos_hint: {'x':.45, 'y':.35}
         Button:
             id: btn_submit
-            background_color: ""
-            canvas.before:
-                Color:
-                    rgba: 1,1,1,1
-                RoundedRectangle:
-                    pos: self.pos
-                    size: self.size
-            color: 0,0,0,1   
             text: "SUBMIT"
             size_hint: (.25, .1)
             pos_hint: {'x':.30, 'y':.15}
