@@ -3,7 +3,7 @@ ScreenManagement:
     MainScreen:
     IDScreen:
 
-<Label>:
+<FieldName@Label>:
     #background_color:
     canvas.before:
         Color:
@@ -18,20 +18,24 @@ ScreenManagement:
     color: 0,0,0,1
     font_size: 20
     size_hint: (.3, .05)
-<TextInput>:
+<FieldInput@TextInput>:
     background: 1., 1., 1., 1.
     font_size: 14
     multiline: False
     size_hint: (.4, .05)
-<Button>:
-    background_color: ""
+<btn@Button>:
+    background_normal: ""
+    background_color: 0,0,0,0
     canvas.before:
         Color:
-            rgba: 1,1,1,1
+            rgba: (0,0.5,0.4,1) if self.state == 'normal' else (0.8,0.6,0,1)
         RoundedRectangle:
             pos: self.pos
             size: self.size
-    color: 0,0,0,1
+            radius: [30,]
+    
+    size_hint: (.25, .1)
+    color: 1,1,1,1
     font_size: 20
 <MainScreen>:
     name: "Main_Screen"
@@ -42,83 +46,74 @@ ScreenManagement:
             pos: self.pos
             size: self.size
     
-    RelativeLayout:
+    FloatLayout:
         size: root.size
-        Label:
+        FieldName:
             id: lbl_FirstName
             pos_hint: {'x':.1, 'y':.85}
             text: 'First Name'
-        Label:
+        FieldName:
             id: lbl_LastName
             pos_hint: {'x':.1, 'y':.75}
             text: 'Last Name'
-        Label:
+        FieldName:
             id: lbl_DOB
             pos_hint: {'x':.1, 'y':.65}
             text: 'Date of Birth'
-        Label:
+        FieldName:
             id: lbl_Nationality
             pos_hint: {'x':.1, 'y':.55}
             text: 'Nationality'
-        Label:
+        FieldName:
             id: lbl_ID1
             pos_hint: {'x':.1, 'y':.45}
             text: 'Identity Document - 1'
-        Label:
+        FieldName:
             id: lbl_ID2
             pos_hint: {'x':.1, 'y':.35}
             text: 'Identity Document - 2'                    
-        TextInput:
+        FieldInput:
             id: txt_FirstName
             pos_hint: {'x':.45, 'y':.85}
-        TextInput:
+        FieldInput:
             id: txt_LastName
             pos_hint: {'x':.45, 'y':.75}
-        TextInput:
+        FieldInput:
             id: txt_DOB
             pos_hint: {'x':.45, 'y':.65}
-            on_focus: root.show_calendar()
-        TextInput:
+            
+        FieldInput:
             id: txt_Nationality
             pos_hint: {'x':.45, 'y':.55}
-        TextInput:
+        FieldInput:
             id: txt_ID1
             pos_hint: {'x':.45, 'y':.45}
-        TextInput:
+        FieldInput:
             id: txt_ID2
             pos_hint: {'x':.45, 'y':.35}
-        Button:
+        btn:
             id: btn_submit
             text: "SUBMIT"
-            size_hint: (.25, .1)
             pos_hint: {'x':.30, 'y':.15}
             on_release: app.root.current = "ID_Screen"
-
-<DatePicker>:
-    pHint: .5, .5
+#<DatePicker>:
+    #pHint: .5, .5
 <IDScreen>:
     name: "ID_Screen"
-    canvas.before:
-        Color:
-            rgba:0.05, 0.5, 0.8,1
-        Rectangle:
-            pos: self.pos
-            size: self.size    
+    FloatLayout:
+        size: root.size        
     Image:
         id: img
         size: 20,30
-    Button:
-        border: 0,0,0,0
-        id: blink
+    btn:
+        border: 1,1,1,1
+        id: btn_blink
         text: "Blink"
         pos_hint: {'x':.1, 'y':.2}
         on_press: root.onCameraClick()
-    Button:
-        id: next
+    btn:
+        id: btn_next
         text: "MAIN"
         pos_hint: {'x':.7, 'y':.2}
         on_release: app.root.current = "Main_Screen"
-    #Label:
-        #id: label
-        #text: "Take a Blink Selfie..!"
-        #pos_hint: {'x':.8, 'y':.3}
+    
