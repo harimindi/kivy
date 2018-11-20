@@ -1,6 +1,6 @@
 import kivy
 from kivy.app import App
-from kivy.lang.builder import Builder
+from kivy.lang import Builder
 from kivy.core.window import Window
 from kivy.uix.floatlayout import FloatLayout
 from kivy.uix.relativelayout import RelativeLayout
@@ -13,20 +13,19 @@ from kivy.uix.screenmanager import ScreenManager, Screen
 class ScreenManagement(ScreenManager):
     pass
 
-class IDScreen(Screen):
-    pass
-    
 class MainScreen(Screen):
     #from kivy.properties import ObjectProperty
     #theTxt = ObjectProperty(None)
     def build(self):
-        kivy = Builder.loadfile('Form1.kv')
+        kivy = Builder.load_file('Form1.kv')
         return kivy
     
     def show_calendar(self):
         datePicker = CustomDatePicker()
         datePicker.show_popup(1, .3)
         
+class IDScreen(Screen):
+    pass
 
 class CustomDatePicker(DatePicker):
 
@@ -37,7 +36,7 @@ class CustomDatePicker(DatePicker):
         self.focus = False
         App.get_running_app().root.ids.txt_DOB.text = self.text
 
- 
+#kivy = Builder.load_file("Form1.kv")
 class Form1(App):
     def build(self):
         #self.root = Builder.loadfile('C:/Hari Docs/Kivy/programs/Form1.kv')
