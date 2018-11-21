@@ -21,6 +21,8 @@ from kivy.uix.widget import Widget
 from KivyCalendar import DatePicker
 from kivy.uix.screenmanager import ScreenManager, Screen
 
+class PassportScreen(Screen):
+    pass
 
 class MainScreen(Screen):
     #from kivy.properties import ObjectProperty
@@ -53,7 +55,7 @@ class IDScreen(Screen):
         COUNTER = 0
         TOTAL = 1
         
-        shape_predictor = 'F:/Data_Science/FaceRecognition/shape_predictor_68_face_landmarks.dat'
+        shape_predictor = 'C:/Hari Docs/python/Installers/shape_predictor_68_face_landmarks.dat'
         detector = dlib.get_frontal_face_detector()
         predictor = dlib.shape_predictor(shape_predictor)
         
