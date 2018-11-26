@@ -14,12 +14,10 @@ from kivy.app import App
 from kivy.lang import Builder
 from kivy.core.window import Window
 from kivy.uix.floatlayout import FloatLayout
-from kivy.uix.relativelayout import RelativeLayout
-#from kivy.uix.label import Label
-#from kivy.uix.textinput import TextInput
 from kivy.uix.widget import Widget
 from KivyCalendar import DatePicker
 from kivy.uix.screenmanager import ScreenManager, Screen
+from kivy.uix.popup import Popup
 
 
 
@@ -113,8 +111,22 @@ class IDScreen(Screen):
             image.source = img_name
 
 class PassportScreen(Screen):
-    def ImageSelect(self, *args):
-        
+    def ImageSelect(self, filename):
+        try:
+            self.ids.img_passport.opacity = 1
+            self.ids.img_passport.source = filename[0]
+            self.ids.file_passport.opacity = 0
+        except:
+            pass
+    
+    def file_browse(self):
+        if self.ids.img_passport.source:
+            self.ids.img_passport.source = ""
+            self.ids.img_passport.opacity = 0
+
+        self.ids.file_passport.opacity = 1
+
+
 class TestScreen(Screen):
     pass	
 class ScreenManagement(ScreenManager):
