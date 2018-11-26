@@ -1,9 +1,15 @@
-
 ScreenManagement:
     MainScreen:
+    TestScreen:
     IDScreen:
     PassportScreen:
-
+<BG@FloatLayout>:
+    canvas:
+        Color: 
+            rgba: (0.48, .09, 0.32, 1)
+        Rectangle:
+            pos: self.pos
+            size: self.size    
 <FieldName@Label>:
     #background_color:
     canvas.before:
@@ -24,8 +30,8 @@ ScreenManagement:
     font_size: 14
     multiline: False
     size_hint: (.4, .05)
-<btn@Button>:
-    background_normal: ""
+<Button>:
+    background_normal:
     background_color: 0,0,0,0
     canvas.before:
         Color:
@@ -34,21 +40,14 @@ ScreenManagement:
             pos: self.pos
             size: self.size
             radius: [30,]
-    
     size_hint: (.25, .1)
     color: 1,1,1,1
     font_size: 20
+#<DatePicker>:
+    #pHint: .5, .5
 <MainScreen>:
     name: "Main_Screen"
-    canvas:
-        Color: 
-            rgba: (0.48, .09, 0.32, 1)
-        Rectangle:
-            pos: self.pos
-            size: self.size
-    
-    FloatLayout:
-        size: root.size
+    BG:
         FieldName:
             id: lbl_FirstName
             pos_hint: {'x':.1, 'y':.85}
@@ -92,41 +91,48 @@ ScreenManagement:
             id: txt_Address
             pos_hint: {'x':.45, 'y':.25}
             size_hint: (.4, .15)
-        btn:
+        Button:
             id: btn_MainScreen_next
             text: "NEXT"
             pos_hint: {'x':.30, 'y':.10}
             on_release: app.root.current = "ID_Screen"
-#<DatePicker>:
-    #pHint: .5, .5
+
 <IDScreen>:
     name: "ID_Screen"
-    canvas:
-        Color: 
-            rgba: (0.48, .09, 0.32, 1)
-        Rectangle:
-            pos: self.pos
-            size: self.size
-    FloatLayout:
-        size: root.size        
-    Image:
-        id: img_IDScreen
-        size: 20,30
-    btn:
-        border: 1,1,1,1
-        id: btn_blink
-        text: "Blink"
-        pos_hint: {'x':.1, 'y':.2}
-        on_press: root.onCameraClick()
-    btn:
-        id: btn_IDScreen_next
-        text: "NEXT"
-        pos_hint: {'x':.7, 'y':.2}
-        on_release: app.root.current = "Passport_Screen"
+    BG:
+        Button:
+            id: btn_blink
+            text: "Blink"
+            pos_hint: {'x':.1, 'y':.1}
+            on_press: root.onCameraClick()
+        Button:
+            id: btn_IDScreen_next
+            text: "NEXT"
+            pos_hint: {'x':.7, 'y':.1}
+            on_release: app.root.current = "Passport_Screen"
+        Label:
+            id: lbl_blink
+            canvas.before:
+                Color:
+                    rgba: 1,1,1,1
+                Line:
+                    width: 2
+                    rectangle: self.x, self.y, self.width, self.height
+            text: "Click on the BLINK button and look at the camera. Blink your eyes and let the camera capture your picture and display on the screen"
+            font_size: 20
+            text_size: self.size
+            halign: 'center'
+            valign: 'center'
+            size_hint: (.7, .6)
+            pos_hint: {'center_x':0.5, 'y':.3}
+        Image:
+            id: img_blink
+            opacity: 0
+            size_hint: (.7, .6)
+            pos_hint: {'center_x':0.5, 'y':.3}
 <PassportScreen>:
     name: "Passport_Screen"
-    FloatLayout:
-        size: root.size
+    BG:
         FieldName:
             id: lbl_Passport
             pos_hint: {'x':.1, 'y':.85}
@@ -134,16 +140,25 @@ ScreenManagement:
         FieldInput:
             id: txt_Passport
             pos_hint: {'x':.45, 'y':.85}
+        FileChooserListView:
+            id: file_passport
+            on_selection: self.ImageSelect(file_passport.selection)
+            size_hint: (.5, .5)
+            pos_hint: {'x':0.45, 'y':.4}
         Image:
-            id: img_PassportScreen
-            size: 20,30
-        btn:
+            id: img_passport
+            source: ""
+            size_hint: (.7, .6)
+            pos_hint: {'center_x':0.5, 'y':.3}
+
+
+        Button:
             border: 1,1,1,1
             id: btn_PassportScreen_previous
             text: "PREVIOUS"
             pos_hint: {'x':.1, 'y':.2}
             on_release: app.root.current = "ID_Screen"
-        btn:
+        Button:
             id: btn_PassportScreen_next
             text: "MAIN"
             pos_hint: {'x':.7, 'y':.2}
