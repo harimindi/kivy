@@ -21,8 +21,7 @@ from kivy.uix.widget import Widget
 from KivyCalendar import DatePicker
 from kivy.uix.screenmanager import ScreenManager, Screen
 
-class PassportScreen(Screen):
-    pass
+
 
 class MainScreen(Screen):
     #from kivy.properties import ObjectProperty
@@ -39,7 +38,8 @@ class MainScreen(Screen):
     '''    
 class IDScreen(Screen):
     def onCameraClick(self, *args):
-        image = self.ids['img']
+        image = self.ids['img_blink']
+        lbl = self.ids['lbl_blink']
         
         def eye_aspect_ratio(eye):
             A = dist.euclidean(eye[1], eye[5])
@@ -55,7 +55,7 @@ class IDScreen(Screen):
         COUNTER = 0
         TOTAL = 1
         
-        shape_predictor = 'C:/Hari Docs/python/Installers/shape_predictor_68_face_landmarks.dat'
+        shape_predictor = 'F:/Data_Science/FaceRecognition/shape_predictor_68_face_landmarks.dat'
         detector = dlib.get_frontal_face_detector()
         predictor = dlib.shape_predictor(shape_predictor)
         
@@ -106,10 +106,17 @@ class IDScreen(Screen):
             if cv2.waitKey(1) & 0xFF == ord('q'):
                 break
         vs.stop()
-        cv2.destroyAllWindows()               
-        image.source = img_name
+        cv2.destroyAllWindows()
+        if lbl.opacity == 1:
+            lbl.opacity = 0
+            image.opacity = 1
+            image.source = img_name
 
-
+class PassportScreen(Screen):
+    def ImageSelect(self, *args):
+        
+class TestScreen(Screen):
+    pass	
 class ScreenManagement(ScreenManager):
     pass
 
