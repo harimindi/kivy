@@ -20,14 +20,16 @@ from kivy.uix.screenmanager import ScreenManager, Screen
 from kivy.uix.popup import Popup
 
 
-
+class Result(Screen):
+    pass
+    
 class MainScreen(Screen):
     #from kivy.properties import ObjectProperty
     #theTxt = ObjectProperty(None)
     pass
     '''
     def build(self):
-        kivy = Builder.load_file('Form1.kv')
+        kivy = Builder.load_file('IVerify.kv')
         return kivy
     
     def show_calendar(self):
@@ -142,9 +144,9 @@ class CustomDatePicker(DatePicker):
         self.focus = False
         App.get_running_app().root.ids.txt_DOB.text = self.text
 '''
-kivy = Builder.load_file("Form1.kv")
-class Form1(App):
+kivy = Builder.load_file("IVerify.kv")
+class IVerify(App):
     def build(self):
         return kivy
 if __name__=='__main__':
-    Form1().run()
+    IVerify().run()
