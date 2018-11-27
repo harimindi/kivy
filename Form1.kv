@@ -30,13 +30,12 @@ ScreenManagement:
     canvas.before:
         Color:
             rgba: 1,1,1,1
-        Line:
-            width: 2
-            #color: 1,1,1,1
-            rectangle: self.x, self.y, self.width, self.height
-    color: 1,1,1,1
-    font_size: 15
-    size_hint: (.2,.05)
+        Rectangle:
+            pos: self.pos
+            size: self.size
+    color: 0,0,0,1
+    font_size: 20
+    #size_hint: (.2,.05)
 <FieldInput@TextInput>:
     background: 1., 1., 1., 1.
     font_size: 14
@@ -165,6 +164,7 @@ ScreenManagement:
             on_release: root.file_browse()
         FileChooserListView:
             id: file_passport
+            path: 'F:'
             on_selection: root.ImageSelect(file_passport.selection)
             size_hint: (.5, .5)
             pos_hint: {'x':0.45, 'y':.3}
@@ -189,44 +189,73 @@ ScreenManagement:
 <Result>:
     name: "Result_Screen"
     BG:
-        LblRes:
-            id: lbl_facematch
-            text: "Passport Photo Match"
-            pos_hint: {'center_x':.4, 'y':.90}
-        LblRes:
-            id: lbl_issuecountry
-            text: "Issuing Country"
-            pos_hint: {'x':.1, 'y':.80}
-        LblRes:
-            id: lbl_lastname
-            text: "Last Name"
-            pos_hint: {'x':.1, 'y':.70}
-        LblRes:
-            id: lbl_givenname
-            text: "Given Name"
-            pos_hint: {'x':.1, 'y':.60}
-        LblRes:
-            id: lbl_passportnum
-            text: "Passport Number"
-            pos_hint: {'x':.1, 'y':.50}
-        LblRes:
-            id: lbl_nationality
-            text: "Nationality"
-            pos_hint: {'x':.1, 'y':.40}
-        LblRes:
-            id: lbl_dob
-            text: "Date Of Birth"
-            pos_hint: {'x':.1, 'y':.30}
-        LblRes:
-            id: lbl_sex
-            text: "Male / Female"
-            pos_hint: {'x':.1, 'y':.20}
-        LblRes:
-            id: lbl_doe
-            text: "Passport Expiry Date"
-            pos_hint: {'x':.1, 'y':.10}
-        MyBtn:
-            id: btn_PassportScreen_next
-            text: "MAIN"
-            pos_hint: {'x':.7, 'y':.02}
-            on_release: app.root.current = "Main_Screen"
+        GridLayout:
+            cols: 2
+            #rows: 9
+            size_hint: (.8,.7)
+            pos_hint: {'x':.1, 'y':.2}
+            spacing: 20
+            LblRes:
+                id: lbl_facematch
+                #size_hint: 
+                text: "Passport Photo Match"
+            TextInput:
+                id: txt_facematch
+                #size_hint:
+            LblRes:
+                id: lbl_countryissue
+                #size_hint: 
+                text: "Country of Issue"
+            TextInput:
+                id: txt_countryissue
+                #size_hint:
+            LblRes:
+                id: lbl_lastname
+                #size_hint: 
+                text: "Last Name"
+            TextInput:
+                id: txt_lastname
+                #size_hint:
+            LblRes:
+                id: lbl_givenname
+                #size_hint: 
+                text: "Given Name"
+            TextInput:
+                id: txt_givenname
+                #size_hint:
+            LblRes:
+                id: lbl_passportnum
+                #size_hint: 
+                text: "Passport Number"
+            TextInput:
+                id: txt_passportnum
+                #size_hint:
+            LblRes:
+                id: lbl_nationality
+                #size_hint: 
+                text: "Nationality"
+            TextInput:
+                id: txt_nationality
+                #size_hint:
+            LblRes:
+                id: lbl_dob
+                #size_hint: 
+                text: "Date of Birth"
+            TextInput:
+                id: txt_dob
+                #size_hint:
+            LblRes:
+                id: lbl_sex
+                #size_hint: 
+                text: "Male / Female"
+            TextInput:
+                id: txt_sex
+                #size_hint:
+            LblRes:
+                id: lbl_doe
+                #size_hint: 
+                text: "Date of Expiry"
+            TextInput:
+                id: txt_doe
+                #size_hint:
+        
