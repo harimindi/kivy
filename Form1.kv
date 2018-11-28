@@ -28,14 +28,17 @@ ScreenManagement:
     size_hint: (.3, .05)
 <LblRes@Label>:
     canvas.before:
-        Color:
+        Color: 
             rgba: 1,1,1,1
-        Rectangle:
-            pos: self.pos
-            size: self.size
-    color: 0,0,0,1
-    font_size: 20
-    #size_hint: (.2,.05)
+        Line:
+            width: 1
+            rectangle: self.x, self.y, self.width, self.height
+    text_size: self.size
+    size_hint: (.6,.05)
+    color: 1,1,1,1
+    font_size:15
+    halign: 'center'
+    valign: 'center'
 <FieldInput@TextInput>:
     background: 1., 1., 1., 1.
     font_size: 14
@@ -164,7 +167,6 @@ ScreenManagement:
             on_release: root.file_browse()
         FileChooserListView:
             id: file_passport
-            path: 'F:'
             on_selection: root.ImageSelect(file_passport.selection)
             size_hint: (.5, .5)
             pos_hint: {'x':0.45, 'y':.3}
@@ -191,71 +193,57 @@ ScreenManagement:
     BG:
         GridLayout:
             cols: 2
-            #rows: 9
             size_hint: (.8,.7)
             pos_hint: {'x':.1, 'y':.2}
             spacing: 20
             LblRes:
                 id: lbl_facematch
-                #size_hint: 
-                text: "Passport Photo Match"
+                text: "Passport Photo Match:"
             TextInput:
                 id: txt_facematch
-                #size_hint:
             LblRes:
                 id: lbl_countryissue
-                #size_hint: 
-                text: "Country of Issue"
+                text: "Country of Issue:"
             TextInput:
                 id: txt_countryissue
-                #size_hint:
             LblRes:
                 id: lbl_lastname
-                #size_hint: 
-                text: "Last Name"
+                text: "Last Name:"
             TextInput:
                 id: txt_lastname
-                #size_hint:
             LblRes:
                 id: lbl_givenname
-                #size_hint: 
-                text: "Given Name"
+                text: "Given Name:"
             TextInput:
                 id: txt_givenname
-                #size_hint:
             LblRes:
                 id: lbl_passportnum
-                #size_hint: 
-                text: "Passport Number"
+                text: "Passport Number:"
             TextInput:
                 id: txt_passportnum
-                #size_hint:
             LblRes:
                 id: lbl_nationality
-                #size_hint: 
-                text: "Nationality"
+                text: "Nationality:"
             TextInput:
                 id: txt_nationality
-                #size_hint:
             LblRes:
                 id: lbl_dob
-                #size_hint: 
-                text: "Date of Birth"
+                text: "Date of Birth:"
             TextInput:
                 id: txt_dob
-                #size_hint:
             LblRes:
-                id: lbl_sex
-                #size_hint: 
-                text: "Male / Female"
+                id: lbl_sex 
+                text: "Male / Female:"
             TextInput:
                 id: txt_sex
-                #size_hint:
             LblRes:
                 id: lbl_doe
-                #size_hint: 
-                text: "Date of Expiry"
+                text: "Date of Expiry:"
             TextInput:
                 id: txt_doe
-                #size_hint:
-        
+    
+        MyBtn:
+            id: btn_PassportScreen_next
+            text: "MAIN"
+            pos_hint: {'x':.7, 'y':.02}
+            on_release: app.root.current = "Main_Screen"
