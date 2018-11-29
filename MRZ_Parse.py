@@ -114,10 +114,12 @@ def extractMRZ(passport):
     #config = '--psm 6 -c tessedit_char_whitelist=ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789>< -c load_system_dawg=F -c load_freq_dawg=F'
     text = pytesseract.image_to_string(Image.open(roi), lang = 'ocrb')
     print(text)'''
+    config = '--psm 6 -c tessedit_char_whitelist=ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789>< -c load_system_dawg=F -c load_freq_dawg=F'
     ocr = pytesseract.image_to_string(gray, lang = 'ocrb')
     return textparse(ocr)
 
 def textparse(text):
+        
     a,b = text.splitlines()
     doctype = a[0:1]
     country = a[2:5]
@@ -133,11 +135,23 @@ def textparse(text):
     checkdigit1 = b[9]
     nationality = b[10:13]
     dob = b[13:19]
-    dob = datetime.strptime(dob, '%y%m%d').strftime('%d-%m-%Y')
+    if dob.isdigit():
+        dob = datetime.strptime(dob, '%y%m%d').strftime('%d-%m-%Y')
+    else:
+        dob = ''
     #checkdigit2 = text[64:65]
     sex = b[20]
+    if sex == 'M':
+        sex = 'MALE'
+    elif sex == 'F':
+        sex = 'FEMALE'
+    else:
+        sex = ''
     doe = b[21:27]
-    doe = datetime.strptime(doe, '%y%m%d').strftime('%d-%m-%Y')
+    if doe.isdigit():
+        doe = datetime.strptime(doe, '%y%m%d').strftime('%d-%m-%Y')
+    else:
+        doe = ''
     personalnum = b[28:42]
     check_personalnum = b[42]
     checkdigit5 = b[43]
