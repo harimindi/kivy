@@ -5,6 +5,7 @@ import cv2
 import os
 import numpy as np
 import imutils
+from datetime import datetime
 
 def extractMRZ(passport):
 
@@ -18,10 +19,13 @@ def extractMRZ(passport):
                     help = "Path to Input Image")
     args = vars(ap.parse_args())
     file = args["input"]'''
+
+    '''
+    #Used for testing with a specific file location
     path = os.path.splitext(passport)[0]
     image = cv2.imread(passport)
-    
-    #image = passport
+    '''
+    image = passport
     image = imutils.resize(image, height=600)
     gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
 
@@ -111,27 +115,37 @@ def extractMRZ(passport):
     text = pytesseract.image_to_string(Image.open(roi), lang = 'ocrb')
     print(text)'''
     ocr = pytesseract.image_to_string(gray, lang = 'ocrb')
-    return ocr
+    return textparse(ocr)
 
 def textparse(text):
-    country = text[2:5]
-    names = text[5:44]
-    docnumber = text[44:54]
-    checkdigit1 = text[54:55]
-    nationality = text[55:58]
-    dob_raw = text[58:64]
-    checkdigit2 = text[64:65]
-    sex = text[65:66]
-    expiry_raw = text[66:72]
-    checkdigit3 = text[72:73]
-    personalnum_raw = text[73:87]
-    checkdigit4 = text[87:88]
-    checkdigit5 = text[88:89]
-    names = names.split('<<')
-    lastname = names[0]
-    givenname = names[1]
-    print('IssuingCountry: {}\nLastName: {}\nGivenName: {}\nDocumentNumber: {}\nNationality: {}\nDate of Birth: {}\nSex: {}\nDate of Expiry: {}'.format(country,lastname, givenname,docnumber,nationality,dob_raw, sex,expiry_raw))
-#print (extractMRZ('F:\Data_Science\Datasets\Passport\Aruna.jpg'))
-txt = extractMRZ('F:\Data_Science\Datasets\Passport\Hari_New.jpg')
-print(txt)
-textparse(txt)
+    a,b = text.splitlines()
+    doctype = a[0:1]
+    country = a[2:5]
+    names = a[5:44].split('<<',1)
+    if len(names) < 2:
+        names += ['']
+    lastname, givenname = names
+    lastname = lastname.replace('<', ' ')
+    givenname = givenname.split('<<')[0]
+    givenname = givenname.replace('<', ' ')
+    docnumber = b[0:9]
+    docnumber = docnumber.replace('<', ' ').strip()
+    checkdigit1 = b[9]
+    nationality = b[10:13]
+    dob = b[13:19]
+    dob = datetime.strptime(dob, '%y%m%d').strftime('%d-%m-%Y')
+    #checkdigit2 = text[64:65]
+    sex = b[20]
+    doe = b[21:27]
+    doe = datetime.strptime(doe, '%y%m%d').strftime('%d-%m-%Y')
+    personalnum = b[28:42]
+    check_personalnum = b[42]
+    checkdigit5 = b[43]
+    '''
+    print('IssuingCountry: {}\nLastName: {}\nGivenName: {}\nDocumentNumber: {}\nNationality: {}\nDate of Birth: {}\nSex: {}\nDate of Expiry: {}'.format(country,lastname, givenname,docnumber,nationality,dob, sex,doe))
+    #print (extractMRZ('F:\Data_Science\Datasets\Passport\Aruna.jpg'))
+    txt = extractMRZ('C:\Hari Docs\Dataset\Passport\Hari.jpg')
+    print(txt)
+    textparse(txt)
+    '''
+    return country,lastname,givenname,docnumber,nationality,dob,sex,doe
