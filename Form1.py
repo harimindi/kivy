@@ -3,11 +3,13 @@ from scipy.spatial import distance as dist
 from imutils.video import FileVideoStream, FPS, VideoStream
 from imutils import face_utils
 import imutils
-import argparse
+import os
 import numpy as np
 import time
 import dlib
 import cv2
+#imports for passport text extraction
+from mrzparse import MrzParse
 #Imports for Kivy UI
 import kivy
 from kivy.app import App
@@ -20,9 +22,6 @@ from kivy.uix.screenmanager import ScreenManager, Screen
 from kivy.uix.popup import Popup
 
 
-class Result(Screen):
-    pass
-    
 class MainScreen(Screen):
     #from kivy.properties import ObjectProperty
     #theTxt = ObjectProperty(None)
@@ -38,6 +37,8 @@ class MainScreen(Screen):
     '''    
 class IDScreen(Screen):
     def onCameraClick(self, *args):
+        global blink_face #Final output of roi image is stored in this variable to be used for further OCR on another class
+
         image = self.ids['img_blink']
         lbl = self.ids['lbl_blink']
         
@@ -111,15 +112,20 @@ class IDScreen(Screen):
             lbl.opacity = 0
             image.opacity = 1
             image.source = img_name
+            blink_face = img_name
+    
 
 class PassportScreen(Screen):
-    def ImageSelect(self, filename):
+    def ImageSelect(self, filename, filepath):
+        
         try:
             self.ids.img_passport.opacity = 1
             self.ids.img_passport.source = filename[0]
             self.ids.file_passport.opacity = 0
         except:
             pass
+        global passportfile
+        passportfile = filename[0]
     
     def file_browse(self):
         if self.ids.img_passport.source:
@@ -127,10 +133,21 @@ class PassportScreen(Screen):
             self.ids.img_passport.opacity = 0
 
         self.ids.file_passport.opacity = 1
-
-
-class TestScreen(Screen):
-    pass	
+    
+class Result(Screen):
+    def displaydata(self):
+        
+        passport = cv2.imread(passportfile)
+        p1,p2,p3,p4,p5,p6,p7,p8 = MrzParse.extractMRZ(passport)
+        self.ids.txt_countryissue.text = p1
+        self.ids.txt_lastname.text = p2
+        self.ids.txt_givenname.text = p3
+        self.ids.txt_passportnum.text = p4
+        self.ids.txt_nationality.text = p5
+        self.ids.txt_dob.text = p6
+        self.ids.txt_sex.text = p7
+        self.ids.txt_doe.text = p8
+    	
 class ScreenManagement(ScreenManager):
     pass
 
