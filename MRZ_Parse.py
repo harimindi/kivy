@@ -90,7 +90,6 @@ def extractMRZ(passport):
             break
 
     # roi is ready now
-
     #preprocess image for tesseract
     img_clean = cv2.resize(roi, None, fx=2, fy=2, interpolation=cv2.INTER_CUBIC)
     img_clean = cv2.bilateralFilter(img_clean, 9, 75, 75)
