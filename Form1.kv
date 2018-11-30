@@ -1,6 +1,5 @@
 ScreenManagement:
     MainScreen:
-    TestScreen:
     IDScreen:
     PassportScreen:
     Result:
@@ -167,7 +166,8 @@ ScreenManagement:
             on_release: root.file_browse()
         FileChooserListView:
             id: file_passport
-            on_selection: root.ImageSelect(file_passport.selection)
+            path: 'C:/Hari Docs/Dataset/Passport'
+            on_selection: root.ImageSelect(file_passport.selection, file_passport.path)
             size_hint: (.5, .5)
             pos_hint: {'x':0.45, 'y':.3}
             opacity: 0
@@ -190,6 +190,7 @@ ScreenManagement:
             on_release: app.root.current = "Result_Screen"
 <Result>:
     name: "Result_Screen"
+    on_enter: root.displaydata()
     BG:
         GridLayout:
             cols: 2
