@@ -42,6 +42,7 @@ class BlinkPhoto(Screen):
 
         image = self.ids['img_blink']
         lbl = self.ids['lbl_blink']
+        self.ids.btn_blink.text = 'Recapture'
         
         def eye_aspect_ratio(eye):
             A = dist.euclidean(eye[1], eye[5])
@@ -57,7 +58,7 @@ class BlinkPhoto(Screen):
         COUNTER = 0
         TOTAL = 1
         
-        shape_predictor = 'F:/Data_Science/Python3/shape_predictor_68_face_landmarks.dat'
+        shape_predictor = 'C:/Hari Docs/python/Installers/shape_predictor_68_face_landmarks.dat'
         detector = dlib.get_frontal_face_detector()
         predictor = dlib.shape_predictor(shape_predictor)
         
@@ -116,13 +117,25 @@ class BlinkPhoto(Screen):
             #cv2.imwrite('blinkface.png', img_name)
     
 class IDSelect(Screen):
-    def Selection(self, *args):
+    global idflag
+    txt = ''
+    def Selection(self, text):
         lbl = self.ids['lbl_IDSelected']
-        txt = self.text
+        txt = '>> '+ text + ' selected'
         if lbl.opacity == 0:
             lbl.opacity = 1
             lbl.text = txt
-
+        else:
+            lbl.text = txt
+    
+    def idDocument(self, *args):
+        lbl_txt = self.ids.lbl_IDSelected.text
+        if 'UK Passport' in lbl_txt:
+            self.parent.current = 'Passport_Screen'
+            idflag = 1
+        elif 'UK Driving License' in lbl_txt:
+            self.parent.current = 'ukdl_Screen'
+            idflag = 2
     
 class PassportScreen(Screen):
     def ImageSelect(self, filename):
@@ -142,13 +155,33 @@ class PassportScreen(Screen):
             self.ids.img_passport.opacity = 0
 
         self.ids.file_passport.opacity = 1
+class UKDL(Screen):
+    def ukdlSelect(self, filename):
+        try:
+            self.ids.img_ukdl.opacity = 1
+            self.ids.img_ukdl.source = filename[0]
+            self.ids.file_ukdl.opacity = 0
+        except:
+            pass
+        global ukdlfile
+        ukdlfile = filename[0]
     
+    def file_browse(self):
+        if self.ids.img_ukdl.source:
+            self.ids.img_ukdl.source = ""
+            self.ids.img_ukdl.opacity = 0
+
+        self.ids.file_ukdl.opacity = 1
+
 class Result(Screen):
     def displaydata(self):
-        passport = cv2.imread(passportfile)
         # Face match result comparing passport photo and pic taken by blink
         source = '.\Blinked_Face.png'
-        compare = passportfile				
+        if idflag == 1:                     #UK Passport
+            compare = passportfile
+        elif idflag == 2:                   # UK Driving License
+            compare = ukdlfile
+
         picture_of_me = face_recognition.load_image_file(source)
         my_face_encoding = face_recognition.face_encodings(picture_of_me)[0]
 
@@ -163,17 +196,22 @@ class Result(Screen):
         else:
             print('No Match')
             self.ids.txt_facematch.text = 'Face Not Recognized'
+        
+        #extract ID document data
+        if idflag == 1:
+            passport = cv2.imread(passportfile)
+            p1,p2,p3,p4,p5,p6,p7,p8 = extractMRZ(passport)
+            self.ids.txt_countryissue.text = p1
+            self.ids.txt_lastname.text = p2
+            self.ids.txt_givenname.text = p3
+            self.ids.txt_passportnum.text = p4
+            self.ids.txt_nationality.text = p5
+            self.ids.txt_dob.text = p6
+            self.ids.txt_sex.text = p7
+            self.ids.txt_doe.text = p8
+    	elif idflag == 2:
+            
 
-        p1,p2,p3,p4,p5,p6,p7,p8 = extractMRZ(passport)
-        self.ids.txt_countryissue.text = p1
-        self.ids.txt_lastname.text = p2
-        self.ids.txt_givenname.text = p3
-        self.ids.txt_passportnum.text = p4
-        self.ids.txt_nationality.text = p5
-        self.ids.txt_dob.text = p6
-        self.ids.txt_sex.text = p7
-        self.ids.txt_doe.text = p8
-    	
 class ScreenManagement(ScreenManager):
     pass
 
