@@ -10,6 +10,7 @@ import dlib
 import cv2
 #imports for passport text extraction and face match
 from mrzparser import extractMRZ
+from ocrdl import extractDL
 import face_recognition
 #Imports for Kivy UI
 import kivy
@@ -117,7 +118,7 @@ class BlinkPhoto(Screen):
             #cv2.imwrite('blinkface.png', img_name)
     
 class IDSelect(Screen):
-    global idflag
+    
     txt = ''
     def Selection(self, text):
         lbl = self.ids['lbl_IDSelected']
@@ -129,6 +130,7 @@ class IDSelect(Screen):
             lbl.text = txt
     
     def idDocument(self, *args):
+        global idflag
         lbl_txt = self.ids.lbl_IDSelected.text
         if 'UK Passport' in lbl_txt:
             self.parent.current = 'Passport_Screen'
@@ -200,16 +202,21 @@ class Result(Screen):
         #extract ID document data
         if idflag == 1:
             passport = cv2.imread(passportfile)
-            p1,p2,p3,p4,p5,p6,p7,p8 = extractMRZ(passport)
-            self.ids.txt_countryissue.text = p1
-            self.ids.txt_lastname.text = p2
-            self.ids.txt_givenname.text = p3
-            self.ids.txt_passportnum.text = p4
-            self.ids.txt_nationality.text = p5
-            self.ids.txt_dob.text = p6
-            self.ids.txt_sex.text = p7
-            self.ids.txt_doe.text = p8
-    	elif idflag == 2:
+            country,lastname,firstname,docnumber,nationality,dob,sex,doe = extractMRZ(passport)
+    	#elif idflag == 2:
+        else:
+            ukdl = cv2.imread(ukdlfile)
+            lastname,firstname,country,dob,date_of_issue,doe,docnumber, Address = extractDL(ukdl)
+            nationality = 'United Kingdom'
+        
+        self.ids.txt_countryissue.text = country
+        self.ids.txt_lastname.text = lastname
+        self.ids.txt_givenname.text = firstname
+        self.ids.txt_passportnum.text = docnumber
+        self.ids.txt_nationality.text = nationality
+        self.ids.txt_dob.text = dob
+        self.ids.txt_sex.text = sex
+        self.ids.txt_doe.text = doe
             
 
 class ScreenManagement(ScreenManager):
