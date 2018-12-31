@@ -3,6 +3,7 @@ ScreenManagement:
     BlinkPhoto:
     IDSelect:
     PassportScreen:
+    UKDL:
     Result:
 <BG@FloatLayout>:
     canvas:
@@ -115,9 +116,14 @@ ScreenManagement:
     name: "Photo_Screen"
     BG:
         MyBtn:
+            id: btn_IDScreen_next
+            text: "BACK"
+            pos_hint: {'x':.1, 'y':.02}
+            on_release: app.root.current = "Main_Screen"
+        MyBtn:
             id: btn_blink
             text: "Blink"
-            pos_hint: {'x':.1, 'y':.02}
+            pos_hint: {'x':.4, 'y':.02}
             on_press: root.onCameraClick()
         MyBtn:
             id: btn_IDScreen_next
@@ -161,56 +167,40 @@ ScreenManagement:
             valign: 'center'
             pos_hint: {'x':.3, 'y':.8}
             size_hint: (.4, .1)
-        Label:
-            id: lbl_idselect2
-            canvas.before:
-                Color:
-                    rgba: 1,1,1,1
-                Line:
-                    width: 1.5
-                    rectangle: self.x, self.y, self.width, self.height
-            text: 'The photo ID chosen from the below list cannot be provided again for address document'
-            text_size: cm(6), None
-            halign: 'justify'
-            valign: 'center'
-            pos_hint: {'x':.3, 'y':.68}
-            size_hint: (.4, .1)
-        Label:
+        
+        FieldName:
             id: lbl_IDSelected
-            canvas.before:
-                Color:
-                    rgba: 1,1,1,1
-                Line:
-                    width: 1
-                    rectangle: self.x, self.y, self.width, self.height
-            text: '>> '
             text_size: cm(6), None
-            halign: 'justify'
+            halign: 'center'
             valign: 'center'
-            pos_hint: {'x':.3, 'y':.2}
-            size_hint: (.4, .1)
+            pos_hint: {'x':.35, 'y':.2}
+            size_hint: (.3, .06)
+            font_size: 15
             opacity: 0
         Button:
             id: btn_UKPassport
             text: 'UK Passport'
             pos_hint: {'x':.35, 'y':.55}
             size_hint: (.3, .05)
-            on_press: root.Selection()
+            on_press: root.Selection(self.text)
         Button:
             id: btn_UKDL
             text: 'UK Driving License'
             pos_hint: {'x':.35, 'y':.50}
             size_hint: (.3, .05)
+            on_press: root.Selection(self.text)
         Button:
             id: btn_NationalID
             text: 'National ID Card'
             pos_hint: {'x':.35, 'y':.45}
             size_hint: (.3, .05)
+            on_press: root.Selection(self.text)
         Button:
             id: btn_NonUKPassport
             text: 'Non UK Passport'
             pos_hint: {'x':.35, 'y':.4}
             size_hint: (.3, .05)
+            on_press: root.Selection(self.text)
             
         MyBtn:
             id: btn_blink
@@ -221,7 +211,8 @@ ScreenManagement:
             id: btn_IDScreen_next
             text: "NEXT"
             pos_hint: {'x':.7, 'y':.02}
-            on_release: app.root.current = "Passport_Screen"
+            on_release: root.idDocument()
+            #on_release: app.root.current = "Passport_Screen"
 <PassportScreen>:
     name: "Passport_Screen"
     BG:
@@ -267,6 +258,33 @@ ScreenManagement:
             text: "NEXT"
             pos_hint: {'x':.7, 'y':.02}
             on_release: app.root.current = "Result_Screen"
+<UKDL>:
+    name: 'ukdl_Screen'
+    BG:
+        FieldName:
+            id: lbl_ukdl
+            pos_hint: {'x':.1, 'y':.80}
+            text: 'Select File'
+        Button:
+            id: btn_ukdlfilebrowse
+            text: "Browse"
+            font_size: 14
+            size_hint: (.1, .05)
+            pos_hint: {'x':.45, 'y':.80}
+            on_release: root.file_browse()
+        FileChooserListView:
+            id: file_ukdl
+            path: 'C:/hari Docs'
+            on_selection: root.ukdlSelect(file_ukdl.selection)
+            size_hint: (.5, .5)
+            pos_hint: {'x':0.45, 'y':.3}
+            opacity: 0
+        Image:
+            id: img_ukdl
+            source: ""
+            size_hint: (.7, .6)
+            pos_hint: {'center_x':0.5, 'y':.15}
+            opacity: 0
 <Result>:
     name: "Result_Screen"
     on_enter: root.displaydata()
