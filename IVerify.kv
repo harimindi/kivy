@@ -236,7 +236,7 @@ ScreenManagement:
             on_release: root.file_browse()
         FileChooserListView:
             id: file_passport
-            path: 'F:'
+            path: 'C:/Hari Docs'
             on_selection: root.ImageSelect(file_passport.selection)
             size_hint: (.5, .5)
             pos_hint: {'x':0.45, 'y':.3}
@@ -252,7 +252,7 @@ ScreenManagement:
             id: btn_PassportScreen_previous
             text: "BACK"
             pos_hint: {'x':.1, 'y':.02}
-            on_release: app.root.current = "Photo_Screen"
+            on_release: app.root.current = "IDSelect_Screen"
         MyBtn:
             id: btn_PassportScreen_next
             text: "NEXT"
@@ -285,6 +285,17 @@ ScreenManagement:
             size_hint: (.7, .6)
             pos_hint: {'center_x':0.5, 'y':.15}
             opacity: 0
+        MyBtn:
+            border: 1,1,1,1
+            id: btn_ukdlscreen_previous
+            text: "BACK"
+            pos_hint: {'x':.1, 'y':.02}
+            on_release: app.root.current = "IDSelect_Screen"
+        MyBtn:
+            id: btn_ukdlscreen_next
+            text: "NEXT"
+            pos_hint: {'x':.7, 'y':.02}
+            on_release: app.root.current = "Result_Screen"
 <Result>:
     name: "Result_Screen"
     on_enter: root.displaydata()
