@@ -59,7 +59,7 @@ class BlinkPhoto(Screen):
         COUNTER = 0
         TOTAL = 1
         
-        shape_predictor = 'C:/Hari Docs/python/Installers/shape_predictor_68_face_landmarks.dat'
+        shape_predictor = './shape_predictor_68_face_landmarks.dat'
         detector = dlib.get_frontal_face_detector()
         predictor = dlib.shape_predictor(shape_predictor)
         
@@ -116,7 +116,7 @@ class BlinkPhoto(Screen):
             image.opacity = 1
             image.source = img_name
             #cv2.imwrite('blinkface.png', img_name)
-    
+
 class IDSelect(Screen):
     
     txt = ''
@@ -138,7 +138,7 @@ class IDSelect(Screen):
         elif 'UK Driving License' in lbl_txt:
             self.parent.current = 'ukdl_Screen'
             idflag = 2
-    
+
 class PassportScreen(Screen):
     def ImageSelect(self, filename):
         
@@ -157,6 +157,7 @@ class PassportScreen(Screen):
             self.ids.img_passport.opacity = 0
 
         self.ids.file_passport.opacity = 1
+
 class UKDL(Screen):
     def ukdlSelect(self, filename):
         try:
@@ -175,6 +176,31 @@ class UKDL(Screen):
 
         self.ids.file_ukdl.opacity = 1
 
+#idflag == 1 is for Passport Screen and 2 is Driving License Screen   
+    def screen_change(self, *args):
+        if idflag == 2:
+            self.parent.current = 'addrSelect_Screen'
+        else:
+            self.parent.current = 'Result_Screen'
+
+class AddrSelect(Screen):
+    txt = ''
+    def addrSelection(self, text):
+        lbl = self.ids['lbl_Addrselected']
+        txt = '>> ' + text + ' selected'
+        if lbl.opacity == 0:
+            lbl.opacity = 1
+            lbl.text = txt
+        else:
+            lbl.text = txt
+    
+    def addrDocument(self, *args):
+        lbl_txt = self.ids.lbl_Addrselected.text
+        if 'UK Driving License' in lbl_txt:
+            self.parent.current = 'ukdl_Screen'
+        else:
+            self.parent.current = 'Result_Screen'
+            
 class Result(Screen):
     def displaydata(self):
         # Face match result comparing passport photo and pic taken by blink
@@ -184,20 +210,24 @@ class Result(Screen):
         elif idflag == 2:                   # UK Driving License
             compare = ukdlfile
 
-        picture_of_me = face_recognition.load_image_file(source)
-        my_face_encoding = face_recognition.face_encodings(picture_of_me)[0]
+        #Photo match with Blinked face
+        if source != '':
+            picture_of_me = face_recognition.load_image_file(source)
+            my_face_encoding = face_recognition.face_encodings(picture_of_me)[0]
 
-        compare_pic = face_recognition.load_image_file(compare)
-        compare_face_encoding = face_recognition.face_encodings(compare_pic)[0]
+            compare_pic = face_recognition.load_image_file(compare)
+            compare_face_encoding = face_recognition.face_encodings(compare_pic)[0]
 
-        facematch = face_recognition.compare_faces([my_face_encoding], compare_face_encoding)
+            facematch = face_recognition.compare_faces([my_face_encoding], compare_face_encoding)
 
-        if facematch[0] == True:
-            print('Photo Matched')
-            self.ids.txt_facematch.text = 'Face Recognized'
+            if facematch[0] == True:
+                print('Photo Matched')
+                self.ids.txt_facematch.text = 'Face Recognized'
+            else:
+                print('No Match')
+                self.ids.txt_facematch.text = 'Face Not Recognized'
         else:
-            print('No Match')
-            self.ids.txt_facematch.text = 'Face Not Recognized'
+            self.ids.txt_facematch.text = 'No Photo Taken'
         
         #extract ID document data
         if idflag == 1:
@@ -206,7 +236,7 @@ class Result(Screen):
     	#elif idflag == 2:
         else:
             ukdl = cv2.imread(ukdlfile)
-            lastname,firstname,country,dob,date_of_issue,doe,docnumber, Address = extractDL(ukdl)
+            lastname,firstname,country,dob,date_of_issue,doe,docnumber,Address = extractDL(ukdl)
             nationality = 'United Kingdom'
         
         self.ids.txt_countryissue.text = country
@@ -217,8 +247,11 @@ class Result(Screen):
         self.ids.txt_dob.text = dob
         self.ids.txt_sex.text = sex
         self.ids.txt_doe.text = doe
-            
-
+    
+    def close_App(self, *args):
+        os.remove('.\Blinked_Face.png')
+        App.get_running_app().stop()
+        
 class ScreenManagement(ScreenManager):
     pass
 
@@ -232,9 +265,9 @@ class CustomDatePicker(DatePicker):
         self.focus = False
         App.get_running_app().root.ids.txt_DOB.text = self.text
 '''
-kivy = Builder.load_file("IVerify.kv")
-class IVerify(App):
+kivy = Builder.load_file("Form2.kv")
+class Form2(App):
     def build(self):
         return kivy
 if __name__=='__main__':
-    IVerify().run()
+    Form2().run()
