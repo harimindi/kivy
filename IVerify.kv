@@ -1,10 +1,13 @@
 ScreenManagement:
     MainScreen:
+    MainScreen_old:
     BlinkPhoto:
     IDSelect:
     PassportScreen:
     UKDL:
+    AddrSelect:
     Result:
+    
 <BG@FloatLayout>:
     canvas:
         Color: 
@@ -50,18 +53,35 @@ ScreenManagement:
     background_color: 0,0,0,0
     canvas.before:
         Color:
-            rgba: (0,0.5,0.4,1) if self.state == 'normal' else (0.8,0.6,0,1)
+            rgba: (0.09,0.5,0.94,1) if self.state == 'normal' else (0.08,0.27,0.5,1)
         RoundedRectangle:
             pos: self.pos
             size: self.size
-            radius: [30,]
+            radius: [20,]
     size_hint: (.25, .1)
     color: 1,1,1,1
     font_size: 20
 #<DatePicker>:
     #pHint: .5, .5
 <MainScreen>:
-    name: "Main_Screen"
+    name: 'Main_Screen'
+    BG:
+        FieldName:
+            id: lbl_code
+            pos_hint: {'center_x':0.5, 'center_y':0.6}
+            size_hint: (.4,.05)
+            text: 'Enter Code given in your application'
+        FieldInput:
+            id: txt_code
+            pos_hint: {'center_x':0.5, 'center_y':0.5}
+            size_hint: (.3, .05)
+        MyBtn:
+            id: btn_MainScreen_next
+            text: "NEXT"
+            pos_hint: {'x':.30, 'y':.02}
+            on_release: app.root.current = "Photo_Screen"
+<MainScreen_old>:
+    name: "Main_Screen_old"
     BG:
         FieldName:
             id: lbl_FirstName
@@ -111,7 +131,6 @@ ScreenManagement:
             text: "NEXT"
             pos_hint: {'x':.30, 'y':.02}
             on_release: app.root.current = "Photo_Screen"
-
 <BlinkPhoto>:
     name: "Photo_Screen"
     BG:
@@ -236,7 +255,7 @@ ScreenManagement:
             on_release: root.file_browse()
         FileChooserListView:
             id: file_passport
-            path: 'C:/Hari Docs'
+            path: 'F:/Data_Science/Kivy/programs/Iden'
             on_selection: root.ImageSelect(file_passport.selection)
             size_hint: (.5, .5)
             pos_hint: {'x':0.45, 'y':.3}
@@ -257,7 +276,7 @@ ScreenManagement:
             id: btn_PassportScreen_next
             text: "NEXT"
             pos_hint: {'x':.7, 'y':.02}
-            on_release: app.root.current = "Result_Screen"
+            on_release: app.root.current = "Addrselect_Screen"
 <UKDL>:
     name: 'ukdl_Screen'
     BG:
@@ -274,7 +293,7 @@ ScreenManagement:
             on_release: root.file_browse()
         FileChooserListView:
             id: file_ukdl
-            path: 'C:/hari Docs'
+            path: 'F:/Data_Science/Kivy/programs/Iden'
             on_selection: root.ukdlSelect(file_ukdl.selection)
             size_hint: (.5, .5)
             pos_hint: {'x':0.45, 'y':.3}
@@ -295,21 +314,132 @@ ScreenManagement:
             id: btn_ukdlscreen_next
             text: "NEXT"
             pos_hint: {'x':.7, 'y':.02}
-            on_release: app.root.current = "Result_Screen"
+            on_release: root.screen_change()
+<AddrSelect>:
+    name: 'Addrselect_Screen'
+    BG:
+        Label:
+            id: lbl_addrselect
+            canvas.before:
+                Color:
+                    rgba: 1,1,1,1
+                Line:
+                    width: 1.5
+                    rectangle: self.x, self.y, self.width, self.height
+            text: 'Select an option from below to provide document for Address'
+            text_size: cm(6), None
+            halign: 'justify'
+            valign: 'center'
+            pos_hint: {'x':.3, 'y':.85}
+            size_hint: (.4, .1)
+        FieldName:
+            id: lbl_Addrselected
+            text_size: cm(6), None
+            halign: 'center'
+            valign: 'center'
+            pos_hint: {'x':.35, 'y':.2}
+            size_hint: (.3, .06)
+            font_size: 15
+            opacity: 0
+        GridLayout:
+            cols: 2
+            size_hint: (.6,.45)
+            pos_hint: {'x':.2, 'y':.35}
+            spacing: 5
+            name: 'addrgrid'        
+            Button:
+                id: btn_ukdl
+                text: 'UK Driving License'
+                #pos_hint: {'x':.35, 'y':.55}
+                #size_hint: (.3, .05)
+                on_press: root.addrSelection(self.text)
+            Button:
+                id: btn_utilitybill
+                text: 'Utility Bill'
+                #pos_hint: {'x':.35, 'y':.50}
+                #size_hint: (.3, .05)
+                on_press: root.addrSelection(self.text)
+            Button:
+                id: btn_creditcardbill
+                text: 'Credit Card Bill'
+                #pos_hint: {'x':.35, 'y':.45}
+                #size_hint: (.3, .05)
+                on_press: root.addrSelection(self.text)
+            Button:
+                id: btn_bankstatement
+                text: 'Bank Statement'
+                #pos_hint: {'x':.35, 'y':.4}
+                #size_hint: (.3, .05)
+                on_press: root.addrSelection(self.text)
+            Button:
+                id: btn_councilbill
+                text: 'Council Tax Bill'
+                on_press: root.addrSelection(self.text)
+            Button:
+                id: btn_cablebill
+                text: 'SKY / Cable TV Bill'
+                on_press: root.addrSelection(self.text)
+            Button:
+                id: btn_bldgsctbill
+                text: 'Building Society Credit Union Statement'
+                #size: self.texture_size
+                halign: 'center'
+                valign: 'center'
+                text_size: cm(6), None
+                on_press: root.addrSelection(self.text)
+            Button:
+                id: btn_mortgagestatement
+                text: 'Mortgage Statement'
+                on_press: root.addrSelection(self.text)
+            Button:
+                id: btn_disabledparkingdoc
+                text: 'Disabled Parking Document'
+                on_press: root.addrSelection(self.text)
+            Button:
+                id: btn_hmrctax
+                text: 'HMRC Tax Notification'
+                on_press: root.addrSelection(self.text)
+            Button:
+                id: btn_tenancyagreement
+                text: 'Tenancy Agreement'
+                on_press: root.addrSelection(self.text)
+            Button:
+                id: btn_benefitsdoc
+                text: 'Recent Benefits Agency Letter'
+                on_press: root.addrSelection(self.text)
+        MyBtn:
+            id: btn_addrselect_back
+            text: "BACK"
+            pos_hint: {'x':.1, 'y':.02}
+            on_press: app.root.current = "IDSelect_Screen"
+        MyBtn:
+            id: btn_addrselect_next
+            text: "NEXT"
+            pos_hint: {'x':.7, 'y':.02}
+            on_release: root.addrDocument()
+<ResTxt@TextInput>:
+    font_size: 12
 <Result>:
     name: "Result_Screen"
     on_enter: root.displaydata()
     BG:
         GridLayout:
+            name: 'resgrid'
             cols: 2
-            size_hint: (.8,.7)
-            pos_hint: {'x':.1, 'y':.2}
-            spacing: 20
+            size_hint: (.65,.75)
+            pos_hint: {'x':.15, 'y':.2}
+            spacing: 10
+            font_size: 12
             LblRes:
                 id: lbl_facematch
                 text: "Passport Photo Match:"
             TextInput:
                 id: txt_facematch
+            LblRes:
+                id: lbl_doctype
+                text: "Document Type:"
+            TextInput:
+                id: txt_doctype    
             LblRes:
                 id: lbl_countryissue
                 text: "Country of Issue:"
@@ -322,14 +452,14 @@ ScreenManagement:
                 id: txt_lastname
             LblRes:
                 id: lbl_givenname
-                text: "Given Name:"
+                text: "First Name:"
             TextInput:
                 id: txt_givenname
             LblRes:
-                id: lbl_passportnum
-                text: "Passport Number:"
+                id: lbl_docnum
+                text: "Document Number:"
             TextInput:
-                id: txt_passportnum
+                id: txt_docnum
             LblRes:
                 id: lbl_nationality
                 text: "Nationality:"
@@ -346,6 +476,13 @@ ScreenManagement:
             TextInput:
                 id: txt_sex
             LblRes:
+                id: lbl_doi 
+                text: "Date of Issue:"
+                opacity: 0
+            TextInput:
+                id: txt_doi
+                opacity: 0
+            LblRes:
                 id: lbl_doe
                 text: "Date of Expiry:"
             TextInput:
@@ -355,9 +492,9 @@ ScreenManagement:
             id: btn_PassportScreen_next
             text: "EXIT"
             pos_hint: {'x':.7, 'y':.02}
-            on_release: App.get_running_app().stop()
+            on_release: root.close_App()
         MyBtn:
             id: btn_PassportScreen_back
             text: "BACK"
-            pos_hint: {'x':.3, 'y':.02}
-            on_release: app.root.current = "Passport_Screen"
+            pos_hint: {'x':.1, 'y':.02}
+            on_release: app.root.current = "Addrselect_Screen"
